@@ -1,29 +1,41 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import store, {CHANGE_FIRSTNAME, CHANGE_LASTNAME } from "../../store"
 import './Author.css';
 
 class Author extends Component {
   constructor(props) {
     super(props);
+    const storeState = store.getState();
+    
     this.state = {
-      authorFirst: '',
-      authorLast: ''
+      authorsFirst: storeState.authorsFirst,
+      authorsLast: storeState.authorsLast
     };
   }
 
   handleAuthorFirstChange(nameVal) {
     this.setState({
-      authorFirst: nameVal
+      authorsFirst: nameVal
     });
   }
 
   handleAuthorLastChange(nameVal) {
     this.setState({
-      authorLast: nameVal
+      authorsLast: nameVal
     });
   }
   saveChanges() {
     // Send data to Redux state
+    const { authorsFirst, authorsLast } = this.state
+    store.dispatch({
+      type: CHANGE_FIRSTNAME,
+      payload: authorsFirst
+    })
+    store.dispatch({
+      type: CHANGE_LASTNAME,
+      payload: authorsLast
+    })
   }
   render() {
     return (
@@ -31,14 +43,14 @@ class Author extends Component {
         <div className="input_container">
           <h2>Author First Name:</h2>
           <input
-            value={this.state.authorFirst}
+            value={this.state.authorsFirst}
             onChange={e => this.handleAuthorFirstChange(e.target.value)}
           />
         </div>
         <div className="input_container">
           <h2>Author Last Name:</h2>
           <input
-            value={this.state.authorLast}
+            value={this.state.authorsLast}
             onChange={e => this.handleAuthorLastChange(e.target.value)}
           />
         </div>
